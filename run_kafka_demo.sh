@@ -20,12 +20,15 @@ gradleIfAvailable() {
 	dir=$1
 	if [[ -d $dir ]]; then
 		pushd $dir
-		echo "building current dir `pwd`"
-		./gradlew jibDockerBuild || exit 1
-		popd
+		
 		docker stop $2 || echo "$2 was not created/running, no stop necessary"
 		echo "Removing container $2, to get it updated - containers are sticky to their build hash"
 		docker container rm $2
+
+
+		echo "building current dir `pwd`"
+		./gradlew jibDockerBuild || exit 1
+		popd
 	fi
 }
 
@@ -72,7 +75,7 @@ echo "All container were build"
 
 echo "Using $pubAddress as IP"
 
-
+docker pull spotify/kafka
 [[ `docker container ls | grep " kafka" | wc -l` -eq "1" ]] && echo "Docker kafka container created" || echo "Creating spotify/kafka container server with name kafka";docker create -p 2181:2181 -p 9092:9092 --name kafka --env ADVERTISED_HOST=$pubAddress --env ADVERTISED_PORT=9092 spotify/kafka
 
 echo "sleeping some time, to start kafka"
@@ -85,7 +88,7 @@ buildConsumer
 
 
 
-
+sleep 30
 
 [[ `docker container ls | grep " kafka-producer" | wc -l` -eq "1" ]] && echo "Docker kafka-producer container created" || echo "Creating bastianbaist/kafka-producer container with name kafka-procuer" ; docker create --name kafka-producer --env bootstrap.servers=$pubAddress:9092 bastianbaist/kafka-producer
 
