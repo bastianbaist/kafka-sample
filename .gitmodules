@@ -1,0 +1,9 @@
+[submodule "KafkaTimestampProducer"]
+	path = KafkaTimestampProducer
+	url = https://github.com/bastianbaist/KafkaTimestampProducer.git
+[submodule "KafkaCutpipeKStream"]
+	path = KafkaCutpipeKStream
+	url = https://github.com/bastianbaist/KafkaCutpipeKStream.git
+[submodule "KafkaTimestampConsumer"]
+	path = KafkaTimestampConsumer
+	url = https://github.com/bastianbaist/KafkaTimestampConsumer.git
